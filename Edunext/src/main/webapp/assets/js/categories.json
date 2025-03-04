@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Smartphones",
+    "icon": "bi bi-phone"
+  },
+  {
+    "id": 2,
+    "name": "Laptops",
+    "icon": "bi bi-laptop"
+  },
+  {
+    "id": 3,
+    "name": "Tablets",
+    "icon": "bi bi-tablet"
+  },
+  {
+    "id": 4,
+    "name": "Headphones",
+    "icon": "bi bi-headphones"
+  },
+  {
+    "id": 5,
+    "name": "Smart Watches",
+    "icon": "bi bi-smartwatch"
+  },
+  {
+    "id": 6,
+    "name": "Gaming Consoles",
+    "icon": "bi bi-controller"
+  },
+  {
+    "id": 7,
+    "name": "Cameras",
+    "icon": "bi bi-camera"
+  },
+  {
+    "id": 8,
+    "name": "Accessories",
+    "icon": "bi bi-usb"
+  }
+]

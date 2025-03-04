@@ -1,0 +1,34 @@
+# Ignore Maven target directory
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# NetBeans specific files
+nbproject/private/
+nb-configuration.xml
+
+# Compiled class files
+*.class
+
+# Logs and temporary files
+*.log
+hs_err_pid*
+
+# IDE-specific files
+/.idea/
+/*.iml
+/.vscode/
+/.DS_Store
+
+# Ignoring deployment files
+*.war
+*.ear
+*.jar
+
+# Local environment settings
+*.env
+*.properties
