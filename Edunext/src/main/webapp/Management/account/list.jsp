@@ -21,9 +21,9 @@
             text-align: center;
             flex-grow: 1;
         ">
-            Brand List
+            Account List
         </h2>
-        <button class="btn-action" data-option="brand" data-action="add"
+        <button class="btn-action" data-option="account" data-action="add"
             style="
                 padding: 10px 15px;
                 background-color: #008CBA;
@@ -35,7 +35,7 @@
             "
             onmouseover="this.style.backgroundColor='#005f73'"
             onmouseout="this.style.backgroundColor='#008CBA'">
-            Create New Brand
+            Create New Account
         </button>
     </div>
 
@@ -49,10 +49,12 @@
         <thead>
             <tr style="background-color: #f2f2f2;">
                 <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">STT</th>
-                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Image</th>
-                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Name</th>
-                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Total Category</th>
-                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Total Product</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Avatar</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Full name</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Username</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Email</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Phone</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Address</th>
                 <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Actions</th>
             </tr>
         </thead>
@@ -60,11 +62,13 @@
             <tr style="border-bottom: 1px solid #ddd;">
                 <td style="padding: 12px; border: 1px solid #ccc;">1</td>
                 <td style="padding: 12px; border: 1px solid #ccc;">Image</td>
-                <td style="padding: 12px; border: 1px solid #ccc;">Brand A</td>
-                <td style="padding: 12px; border: 1px solid #ccc;">50</td>
-                <td style="padding: 12px; border: 1px solid #ccc;">200</td>
+                <td style="padding: 12px; border: 1px solid #ccc;">Admin</td>
+                <td style="padding: 12px; border: 1px solid #ccc;">admin</td>
+                <td style="padding: 12px; border: 1px solid #ccc;">admin@gmail.com</td>
+                <td style="padding: 12px; border: 1px solid #ccc;">0983653430</td>
+                <td style="padding: 12px; border: 1px solid #ccc;">HCM</td>
                 <td style="padding: 12px; border: 1px solid #ccc;">
-                    <button class="btn-action" data-option="brand" data-action="edit" data-id="1"
+                    <button class="btn-action" data-option="account" data-action="edit" data-id="1"
                         style="
                             padding: 8px 12px;
                             background-color: #4CAF50;
@@ -72,14 +76,14 @@
                             border: none;
                             cursor: pointer;
                             border-radius: 5px;
-                            margin-right: 20px;
+                            margin-right: 20px ;
                             transition: 0.3s;
                         "
                         onmouseover="this.style.backgroundColor='#388e3c'"
                         onmouseout="this.style.backgroundColor='#4CAF50'">
                         Edit
                     </button>
-                    <button class="btn-action" data-option="brand" data-action="delete" data-id="1"
+                    <button class="btn-action" data-option="account" data-action="delete" data-id="1"
                         style="
                             padding: 8px 12px;
                             background-color: #f44336;

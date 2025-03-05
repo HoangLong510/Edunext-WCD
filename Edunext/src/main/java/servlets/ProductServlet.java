@@ -24,39 +24,26 @@ public class ProductServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String page = req.getParameter("page");
-        String pageAction = req.getParameter("pageAction");
-
-        if (page == null || page.isEmpty()) {
-            page = "list";
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if(action == null){
+            action ="list";
         }
-
-        if ("product".equals(page)) {
-            if ("add".equals(pageAction)) {
-                showFormAddProduct(req, resp);
-                return;
-            } else if ("edit".equals(pageAction)) {
-                showFormEditProduct(req, resp);
-                return;
-            } else {
-                showListProduct(req, resp);
-                return;
-            }
-        }
-
-        switch (page) {
+        switch (action) {
             case "list":
-                showListProduct(req, resp);
+                request.getRequestDispatcher("/Management/product/list.jsp").forward(request, response);
                 break;
             case "add":
-                showFormAddProduct(req, resp);
+                request.getRequestDispatcher("/Management/product/productForm.jsp").forward(request, response);
                 break;
             case "edit":
-                showFormEditProduct(req, resp);
+                request.setAttribute("id", request.getParameter("id"));
+                request.getRequestDispatcher("/Management/product/productForm.jsp").forward(request, response);
                 break;
-            default:
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid page or action parameter");
+            case "delete":
+                response.sendRedirect("/Management/product?action=list");
+                break;
         }
     }
 
