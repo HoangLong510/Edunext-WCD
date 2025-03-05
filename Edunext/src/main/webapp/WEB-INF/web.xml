@@ -16,21 +16,29 @@
         <servlet-name>Management</servlet-name>
         <servlet-class>servlets.Management</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AccountServlet</servlet-name>
+        <servlet-class>servlets.AccountServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CategoryServlet</servlet-name>
-        <url-pattern>/Management/category</url-pattern> 
+        <url-pattern>/Management/category</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
-        <url-pattern>/Management/product</url-pattern> 
+        <url-pattern>/Management/product</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BrandServlet</servlet-name>
-        <url-pattern>/Management/brand</url-pattern> 
+        <url-pattern>/Management/brand</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Management</servlet-name>
-        <url-pattern>/Management</url-pattern>  
+        <url-pattern>/Management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountServlet</servlet-name>
+        <url-pattern>/Management/account</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

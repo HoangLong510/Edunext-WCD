@@ -3,7 +3,7 @@
     <!-- Define Persistence Unit -->
     <persistence-unit name="Edunext">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>models.User</class>
+        <class>models.Brand</class>
         <class>models.Category</class>
         <class>models.Products</class>
         <properties>

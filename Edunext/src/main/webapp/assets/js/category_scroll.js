@@ -1,17 +1,13 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
     try {
-        // Fetch dữ liệu từ categories.json
         const response = await fetch("/Edunext/assets/js/categories.json");
         const categories = await response.json();
 
-        // Kiểm tra dữ liệu
-        console.log("Categories loaded:", categories);
 
         const swiperWrapper = document.querySelector(".swiper-wrapper");
 
         if (!swiperWrapper) {
-            console.error("Không tìm thấy .swiper-wrapper!");
             return;
         }
 
@@ -47,8 +43,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 320: {slidesPerView: 1}
             }
         });
-
-        console.log("Swiper initialized successfully!");
     } catch (error) {
         console.error("Lỗi khi tải categories.json:", error);
     }

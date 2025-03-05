@@ -13,8 +13,8 @@ import java.util.List;
 
 public class CategoryServlet extends HttpServlet {
 
-    CategoryDao cateDao;
-    BrandDao brandDao;
+    private CategoryDao cateDao;
+    private BrandDao brandDao;
 
     @Override
     public void init() throws ServletException {
@@ -24,87 +24,90 @@ public class CategoryServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String page = req.getParameter("page");
-        String pageAction = req.getParameter("pageAction");
-
-        if (page == null || page.isEmpty()) {
-            page = "list";
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if(action == null){
+            action ="list";
         }
-
-        if ("category".equals(page)) {
-            if ("add".equals(pageAction)) {
-                showFormAddCate(req, resp);
-                return;
-            } else if ("edit".equals(pageAction)) {
-                showFormEditCate(req, resp);
-                return;
-            } else {
-                showListCate(req, resp);
-                return;
-            }
-        }
-
-        switch (page) {
+        switch (action) {
             case "list":
-                showListCate(req, resp);
+                request.getRequestDispatcher("/Management/category/list.jsp").forward(request, response);
                 break;
             case "add":
-                showFormAddCate(req, resp);
+                request.getRequestDispatcher("/Management/category/categoryForm.jsp").forward(request, response);
                 break;
             case "edit":
-                showFormEditCate(req, resp);
+                request.setAttribute("id", request.getParameter("id"));
+                request.getRequestDispatcher("/Management/category/categoryForm.jsp").forward(request, response);
                 break;
-            default:
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid page or action parameter");
+            case "delete":
+                response.sendRedirect("Management?option=category&action=list");
+                break;
         }
     }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
+
+        System.out.println("doPost() called | action=" + action);
+
         if (action == null) {
-            action = "list";
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing action parameter");
+            return;
         }
+
         switch (action) {
             case "add":
                 addCate(req, resp);
                 break;
             default:
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid page or action parameter");
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action parameter");
         }
     }
 
     private void showListCate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Category> cates = cateDao.getAll();
-        req.setAttribute("cates", cates);
-        req.getRequestDispatcher("/Management/category/list.jsp").forward(req, resp);
+        try {
+            List<Category> cates = cateDao.getAll();
+            System.out.println("✅ Fetched Categories: " + cates.size());
+            req.setAttribute("cates", cates);
+            req.getRequestDispatcher("/Management/category/list.jsp").forward(req, resp);
+        } catch (Exception e) {
+            System.out.println("❌ Error fetching categories: " + e.getMessage());
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error retrieving categories");
+        }
     }
 
     private void showFormAddCate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("showFormAddCate called");
-        List<Brand> brands = brandDao.getAll();
-        System.out.println("Number of brands: " + brands.size()); 
-        req.setAttribute("brands", brands);
-        req.getRequestDispatcher("/Management/category/add.jsp").forward(req, resp);
-        System.out.println("Forwarded to add.jsp");
+        try {
+            List<Brand> brands = brandDao.getAll();
+            System.out.println("✅ Number of brands: " + brands.size());
+            req.setAttribute("brands", brands);
+            req.getRequestDispatcher("/Management/category/add.jsp").forward(req, resp);
+        } catch (Exception e) {
+            System.out.println("❌ Error fetching brands: " + e.getMessage());
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error retrieving brands");
+        }
     }
 
     private void addCate(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String name = req.getParameter("name");
-        int brandId = Integer.parseInt(req.getParameter("brandId"));
-        Brand brand = brandDao.getOne(brandId);
-        Category newCate = new Category(name, brand);
-        cateDao.create(newCate);
-        resp.sendRedirect("Management/category?page=list");
-    }
+        String image = req.getParameter("image");
 
-    private void showFormEditCate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        Category cate = cateDao.getOne(id);
-        List<Brand> brands = brandDao.getAll();
-        req.setAttribute("cate", cate);
-        req.setAttribute("brands", brands);
-        req.getRequestDispatcher("/Management/category/edit.jsp").forward(req, resp);
+        if (name == null || name.trim().isEmpty() || image == null || image.trim().isEmpty()) {
+            System.out.println("❌ Missing category name or image");
+            resp.sendRedirect("/Edunext/Management?page=category&error=Missing+name+or+image");
+            return;
+        }
+
+        try {
+            Category newCate = new Category(name, image);
+            cateDao.create(newCate);
+            System.out.println("✅ Category added: " + name);
+            resp.sendRedirect("/Edunext/Management?page=category&success=Category+added");
+        } catch (Exception e) {
+            System.out.println("❌ Error adding category: " + e.getMessage());
+            resp.sendRedirect("/Edunext/Management?page=category&error=Failed+to+add+category");
+        }
     }
 }

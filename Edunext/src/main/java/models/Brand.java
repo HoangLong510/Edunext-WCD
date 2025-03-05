@@ -17,69 +17,47 @@ public class Brand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    private String description;
-    private String logo;
-    
-    @OneToMany (mappedBy = "brand",
-            cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
-    private List<Category> categories;
+    private String image;
     
     public Brand() {
     }
     
-    public Brand( String name, String description, String logo) {
+    public Brand( String name,  String image) {
         this.name = name;
-        this.description = description;
-        this.logo = logo;
+        this.image = image;
     }
     
-    public Brand(int id, String name, String description, String logo, List<Category> categories) {
+    public Brand(int id, String name, String image) {
         this.id = id;
         this.name = name;
-        this.description = description;
-        this.logo = logo;
-        this.categories = categories;
+        this.image = image;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getImage() {
+        return image;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
+   
     
     
 }

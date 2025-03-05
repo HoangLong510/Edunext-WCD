@@ -1,5 +1,6 @@
 <!-- JavaScript -->
 <script src="/Edunext/assets/js/category_scroll.js" defer></script>
+<script src="/Edunext/assets/js/ajax_dynamic_loading.js" defer></script>
 <!-- Bootstrap & Swiper Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
@@ -25,90 +26,7 @@
             offcanvasInstance.hide();
         }
     });
-    // menu "active" in admin_dashboard
-    document.addEventListener("DOMContentLoaded", function () {
-        let currentPath = window.location.pathname;
-        document.querySelectorAll(".menu-item").forEach((item) => {
-            if (currentPath.includes(item.getAttribute("href"))) {
-                item.classList.add("active");
-            }
-        });
-    });
-    function loadContent(page) {
-        console.log('Loading content for page:', page);
-        fetch('Management?page=' + page)
-            .then(response => {
-                console.log('Response status:', response.status);
-                return response.text();
-            })
-            .then(data => {
-                console.log('Data received:', data);
-                document.getElementById('content-panel').innerHTML = data;
-
-                if (page === 'category') {
-                    var addCategoryLink = document.getElementById('addCategoryLink');
-                    if (addCategoryLink) {
-                        addCategoryLink.addEventListener('click', function (event) {
-                            event.preventDefault();
-                            loadContent('category&pageAction=add');
-                        });
-                    } else {
-                        console.log("addCategoryLink not found");
-                    }
-                } else if (page === 'product') {
-                    var addProductLink = document.getElementById('addProductLink');
-                    if (addProductLink) {
-                        addProductLink.addEventListener('click', function (event) {
-                            event.preventDefault();
-                            loadContent('product&pageAction=add');
-                        });
-                    } else {
-                        console.log("addProductLink not found");
-                    }
-                } else if (page === 'brand') {
-                    var addBrandLink = document.getElementById('addBrandLink');
-                    if (addBrandLink) {
-                        addBrandLink.addEventListener('click', function (event) {
-                            event.preventDefault();
-                            loadContent('brand&pageAction=add');
-                        });
-                    } else {
-                        console.log("addBrandLink not found");
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
-
-    document.getElementById('generalTab').addEventListener('click', function (event) {
-        event.preventDefault();
-        loadContent('general');
-    });
-
-    document.getElementById('accountTab').addEventListener('click', function (event) {
-        event.preventDefault();
-        loadContent('account');
-    });
-
-    document.getElementById('productTab').addEventListener('click', function (event) {
-        event.preventDefault();
-        loadContent('product');
-    });
-
-    document.getElementById('categoryTab').addEventListener('click', function (event) {
-        event.preventDefault();
-        loadContent('category');
-    });
-
-    document.getElementById('brandTab').addEventListener('click', function (event) {
-        event.preventDefault();
-        loadContent('brand');
-    });
-
-    // Load general content by default
-    loadContent('general');
+    
 </script>
 </body>
 

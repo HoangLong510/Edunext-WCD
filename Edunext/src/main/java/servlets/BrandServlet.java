@@ -20,39 +20,27 @@ public class BrandServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String page = req.getParameter("page");
-        String pageAction = req.getParameter("pageAction");
-
-        if (page == null || page.isEmpty()) {
-            page = "list";
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if(action == null){
+            action ="list";
         }
-
-        if ("brand".equals(page)) {
-            if ("add".equals(pageAction)) {
-                showFormAddBrand(req, resp);
-                return;
-            } else if ("edit".equals(pageAction)) {
-                showFormEditBrand(req, resp);
-                return;
-            } else {
-                showListBrand(req, resp);
-                return;
-            }
-        }
-
-        switch (page) {
+        switch (action) {
             case "list":
-                showListBrand(req, resp);
+                request.getRequestDispatcher("/Management/brand/list.jsp").forward(request, response);
                 break;
             case "add":
-                showFormAddBrand(req, resp);
+                request.getRequestDispatcher("/Management/brand/brandForm.jsp").forward(request, response);
                 break;
             case "edit":
-                showFormEditBrand(req, resp);
+                request.setAttribute("id", request.getParameter("id"));
+                request.getRequestDispatcher("/Management/brand/brandForm.jsp").forward(request, response);
                 break;
-            default:
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid page or action parameter");
+            case "delete":
+                // Xử lý xóa thương hiệu
+                response.sendRedirect("/Management/brand?Action=list");
+                break;
         }
     }
 
@@ -84,16 +72,10 @@ public class BrandServlet extends HttpServlet {
     private void addBrand(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String name = req.getParameter("name");
         String description = req.getParameter("description");
-        String logo = req.getParameter("logo");
-        Brand newBrand = new Brand(name, description, logo);
+        String image = req.getParameter("image");
+        Brand newBrand = new Brand(name,  image);
         brandDao.create(newBrand);
         resp.sendRedirect("Management/brand?page=list");
     }
 
-    private void showFormEditBrand(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        Brand brand = brandDao.getOne(id);
-        req.setAttribute("brand", brand);
-        req.getRequestDispatcher("/Management/brand/edit.jsp").forward(req, resp);
-    }
 }
