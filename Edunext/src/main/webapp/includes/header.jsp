@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -92,42 +93,68 @@
                     <!-- Right-side elements (Dịch sát phải) -->
                     <div class="d-flex align-items-center gap-3 ms-auto">
                         <!-- Wishlist -->
-                        <a href="${pageContext.request.contextPath}/wishlist" class="btn btn-outline-secondary border-0 d-none d-sm-inline-flex">
-                            <i class="bi bi-heart"></i>
-                        </a>
+                        <c:if test="${user != null}">
+                            <a href="${pageContext.request.contextPath}/wishlist" class="btn btn-outline-secondary border-0 d-none d-sm-inline-flex">
+                                <i class="bi bi-heart"></i>
+                            </a>
+                        </c:if>
 
                         <!-- Shopping Cart -->
-                        <a href="${pageContext.request.contextPath}/cart" class="btn btn-outline-secondary border-0 position-relative">
-                            <i class="bi bi-cart"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                                3
-                            </span>
-                        </a>
+                        <c:if test="${user != null}">
+                            <a href="${pageContext.request.contextPath}/cart" class="btn btn-outline-secondary border-0 position-relative">
+                                <i class="bi bi-cart"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                                    3
+                                </span>
+                            </a>
+                        </c:if>
+                        
+                        <c:if test="${user == null}">
+                            <a href="auth?action=login" class="btn border-0 d-flex align-items-center">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                                <span style="margin-left: 5px;">
+                                    Login
+                                </span>
+                            </a>
+                            <a href="auth?action=register" class="btn border-0 d-flex align-items-center">
+                                <i class="bi bi-person-add"></i>
+                                <span style="margin-left: 5px;">
+                                    Register
+                                </span>
+                            </a>
+                        </c:if>
 
-                        <!-- User Account Dropdown -->
-                        <div class="dropdown">
-                            <button class="btn border-0 dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
-                                <img src="${user.avatar}" alt="User Avatar" class="rounded-circle" width="32" height="32">
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><h6 class="dropdown-header">${user.fullName}</h6></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/account">Profile</a></li>
-                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/orders">Orders</a></li>
+                        <c:if test="${user != null}">
+                            <!-- User Account Dropdown -->
+                            <div class="dropdown">
+                                <button class="btn border-0 dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                                    <i class="bi bi-person"></i>
+                                </button>
 
-                                <!-- Kiểm tra role, nếu là admin thì hiển thị tab Management -->
-                                
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item fw-bold text-primary" href="${pageContext.request.contextPath}/Management">Management</a></li>
-                                  
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><h6 class="dropdown-header">${user.fullName}</h6></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/account">Profile</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/orders">Orders</a></li>
 
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger fw-bold" href="${pageContext.request.contextPath}/logout">Logout</a></li>
-                            </ul>
-                        </div>
+                                    <!-- Kiểm tra role, nếu là admin thì hiển thị tab Management -->
+
+                                    <c:if test="${user.role == 'admin'}">
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item fw-bold text-primary" href="${pageContext.request.contextPath}/Management">
+                                                Management
+                                            </a>
+                                        </li>
+                                    </c:if>
+
+
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger fw-bold" href="auth?action=logout">Logout</a></li>
+                                </ul>
+
+                            </div>
+                        </c:if>
                     </div>
                 </div>
             </div>
         </nav>
-
-
-
