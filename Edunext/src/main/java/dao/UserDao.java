@@ -1,10 +1,12 @@
 package dao;
 
+import Utils.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
+import java.util.List;
 import models.User;
 
 public class UserDao {
@@ -53,6 +55,50 @@ public class UserDao {
             return false;
         } catch (Exception e) {
             return false;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<User> getAll(){
+        EntityManager em = JPAUtil.getEntityManager();
+        List<User> users = em.createQuery("SELECT u FROM User u", User.class)
+                .getResultList();
+        em.close();
+        return users;
+    }
+    
+    public void deleteUser(int id){
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction ts = em.getTransaction();
+        try {
+            ts.begin();
+            User user = em.find(User.class, id);
+            em.remove(user);
+            ts.commit();
+        } catch (Exception e) {
+            ts.rollback();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public User getUserById(int id){
+        EntityManager em = JPAUtil.getEntityManager();
+        User user = em.find(User.class, id);
+        em.close();
+        return user;
+    }
+    
+    public void editUser(User user){
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction ts = em.getTransaction();
+        try {
+            ts.begin();
+            em.merge(user);
+            ts.commit();
+        } catch (Exception e) {
+            ts.rollback();
         } finally {
             em.close();
         }
