@@ -15,7 +15,7 @@
         <form action="auth?action=login" method="post">
             <div class="mb-3 mt-3">
                 <label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                <input type="text" class="form-control" id="email" placeholder="Enter email" name="email">
                 <span class="text-danger">${not empty errors.email ? errors.email : ''}</span>
             </div>
             <div class="mb-3">
