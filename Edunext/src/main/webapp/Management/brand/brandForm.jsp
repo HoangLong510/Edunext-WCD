@@ -17,9 +17,12 @@
                 <div class="mb-3">
                     <label class="form-label">Brand Image</label>
                     <input type="file" class="form-control" name="image" accept="image/*">
-                    <% if (request.getAttribute("image") != null) {%>
-                    <p>Current Image: <img src="<%= request.getAttribute("image")%>" alt="Brand Image" width="100"></p>
-                        <% }%>
+                    <% if (request.getAttribute("image") != null && !request.getAttribute("image").toString().isEmpty()) {%>
+                    <div class="mt-2">
+                        <img src="<%= request.getContextPath()%>/<%= request.getAttribute("image")%>" 
+                             alt="Current Brand Image" width="100">
+                    </div>
+                    <% }%>
                 </div>
 
                 <div class="text-center mt-4">

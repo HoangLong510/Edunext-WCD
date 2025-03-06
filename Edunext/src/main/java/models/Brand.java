@@ -18,6 +18,7 @@ public class Brand {
     private int id;
     private String name;
     private String image;
+    private boolean status;
     @OneToMany(mappedBy = "brand",
             cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private List<Category> categories;
@@ -25,7 +26,7 @@ public class Brand {
     public Brand() {
     }
     
-    public Brand( String name,  String image) {
+    public Brand( String name,  String image ) {
         this.name = name;
         this.image = image;
     }
@@ -58,6 +59,22 @@ public class Brand {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
    

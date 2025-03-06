@@ -1,6 +1,7 @@
 package servlets;
 
 import dao.BrandDao;
+import dao.CategoryDao;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -8,21 +9,25 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.io.Console;
 import models.Brand;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import models.Category;
 
 @MultipartConfig
 public class BrandServlet extends HttpServlet {
 
     BrandDao brandDao;
+    CategoryDao cateDao;
 
     @Override
     public void init() throws ServletException {
         super.init();
         brandDao = new BrandDao();
+        cateDao = new CategoryDao();
     }
 
     @Override
@@ -42,6 +47,9 @@ public class BrandServlet extends HttpServlet {
             case "edit":
                 showFormEditBrand(req, resp);
                 break;
+            case "sort":
+                sortBrands(req, resp); // Action sort mới
+                break;
             case "delete":
                 break;
         }
@@ -59,6 +67,9 @@ public class BrandServlet extends HttpServlet {
                 break;
             case "edit":
                 editBrand(req, resp);
+                break;
+            case "delete":
+                deleteBrand(req, resp);
                 break;
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid page or action parameter");
@@ -166,6 +177,34 @@ public class BrandServlet extends HttpServlet {
             // Nếu không tìm thấy thương hiệu, gửi lỗi
             resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Brand not found");
         }
+    }
+
+    private void deleteBrand(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int brandId = Integer.parseInt(req.getParameter("id"));
+        try {
+            brandDao.deactivateBrand(brandId);
+
+            resp.sendRedirect(req.getContextPath() + "/Management/brand");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error updating brand status");
+        }
+    }
+
+    private void sortBrands(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String statusParam = req.getParameter("status");
+        boolean status = true; // Mặc định là true (Active)
+        if (statusParam != null && statusParam.equals("false")) {
+            status = false; // Nếu statusParam là "false" thì lọc theo inactive
+        }
+
+        // Gọi phương thức trong BrandDao để lấy danh sách sắp xếp
+        List<Brand> brands = brandDao.getBrandsByStatus(status);
+        // Đưa danh sách brand vào request attribute để hiển thị
+        req.setAttribute("brands", brands);
+
+        // Chuyển hướng đến JSP để hiển thị danh sách brand đã được sắp xếp
+        req.getRequestDispatcher("/Management/brand/list.jsp").forward(req, resp);
     }
 
 }

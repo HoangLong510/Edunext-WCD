@@ -31,6 +31,7 @@ public class BrandDao {
         EntityTransaction ts = em.getTransaction();
         try {
             ts.begin();
+            brand.setStatus(true);
             em.persist(brand);
             ts.commit();
         } catch (Exception e) {
@@ -77,7 +78,48 @@ public class BrandDao {
         }
         return categories;
     }
-    
-    
+
+    public void deactivateBrand(int brandId) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction ts = em.getTransaction();
+        try {
+            ts.begin();
+
+            Brand brand = em.find(Brand.class, brandId);
+
+            if (brand != null) {
+                boolean currentStatus = brand.isStatus();
+                brand.setStatus(!currentStatus);
+                em.merge(brand);
+
+                List<Category> categories = brand.getCategories();
+                for (Category category : categories) {
+                    category.setStatus(!currentStatus);
+                    em.merge(category);
+                }
+
+                ts.commit();
+            } else {
+                System.out.println("Brand not found");
+            }
+        } catch (Exception e) {
+            ts.rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Brand> getBrandsByStatus(boolean status) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            String queryStr = "SELECT b FROM Brand b WHERE b.status = :status";
+            TypedQuery<Brand> query = em.createQuery(queryStr, Brand.class);
+            query.setParameter("status", status);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 
 }

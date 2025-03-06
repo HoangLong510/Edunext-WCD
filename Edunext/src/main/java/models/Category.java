@@ -20,6 +20,7 @@ public class Category {
     private int id;
     private String name;
     private String image;
+    private boolean status;
     //quan he N-1 vs brand
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
@@ -32,15 +33,15 @@ public class Category {
 
     public Category() {
     }
-    
-    public Category(String name, String image) {
 
+    public Category(String name, String image, Brand brand) {
         this.name = name;
         this.image = image;
-   
+        this.brand = brand;
     }
     
-    public Category(int id, String name, String image, List<Product> products) {
+    
+    public Category(int id, String name, String image, List<Product> products ) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -77,6 +78,22 @@ public class Category {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
     
     
