@@ -78,6 +78,16 @@ public class CategoryDao {
 //        return categories;
 //    }
     
-    
+    public List<Category> getCategoriesByStatus(boolean status) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            String queryStr = "SELECT c FROM Category c WHERE c.status = :status";
+            TypedQuery<Category> query = em.createQuery(queryStr, Category.class);
+            query.setParameter("status", status);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 
 }

@@ -42,10 +42,12 @@
                     <label for="brand" class="form-label">Brand:</label>
                     <select class="form-control" id="brand" name="brand_id" required>
                         <c:forEach var="b" items="${brands}">
-                            <option value="${b.id}" 
-                                    <c:if test="${b.id == requestScope.categoryBrandId}">selected</c:if>>
-                                ${b.name}
-                            </option>
+                            <c:if test="${b.status == true }">
+                                <option value="${b.id}" 
+                                        <c:if test="${b.id == requestScope.categoryBrandId}">selected</c:if>>
+                                    ${b.name}
+                                </option>
+                            </c:if>
                         </c:forEach>
                     </select>
                 </div>

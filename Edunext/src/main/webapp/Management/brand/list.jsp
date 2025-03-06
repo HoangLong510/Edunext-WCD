@@ -25,17 +25,7 @@
             ">
             Brand List
         </h2>
-        <form method="get" action="${pageContext.request.contextPath}/Management/brand">
-            <div class="mb-3">
-                <label for="status" class="form-label">Filter by Status</label>
-                <select name="status" class="form-control" id="status" onchange="this.form.submit()">
-                    <option value="">--All--</option>
-                    <option value="true" <%= request.getParameter("status") != null && request.getParameter("status").equals("true") ? "selected" : ""%>>Active</option>
-                    <option value="false" <%= request.getParameter("status") != null && request.getParameter("status").equals("false") ? "selected" : ""%>>Inactive</option>
-                </select>
-            </div>
-            <input type="hidden" name="action" value="sort"/>
-        </form>
+
         <button class="btn-action" data-option="brand" data-action="add"
                 style="
                 padding: 10px 15px;
@@ -50,6 +40,22 @@
                 onmouseout="this.style.backgroundColor = '#008CBA'">
             Create New Brand
         </button>
+
+        <div class="container mt-3">
+            <div class="card shadow-sm" style="width: 20%; min-width: 250px;">
+                <div class="card-body">
+                    <h5 class="card-title">Filter by Status</h5>
+                    <form method="get" action="${pageContext.request.contextPath}/Management/brand">
+                        <select name="status" class="form-control" id="status" onchange="this.form.submit()">
+                            <option value="">--All--</option>
+                            <option value="true" ${status == 'true' ? 'selected' : ''}>Active</option>
+                            <option value="false" ${status == 'false' ? 'selected' : ''}>Inactive</option>
+                        </select>
+                        <input type="hidden" name="action" value="sort"/>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <table border="1" 
@@ -60,11 +66,12 @@
            background: white;
            ">
         <thead>
-            <tr style="background-color: #f2f2f2;">
-                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">STT</th>
-                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Image</th>
-                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Name</th>
-                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Actions</th>
+            <tr style="background-color: #f2f2f2 ; table-layout: fixed;">
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd; width: 10%;">STT</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd; width: 20%;">Image</th>
+                <th style="padding: 8px; text-align: left; border-bottom: 2px solid #ddd; width: 25%;">Name</th>
+                <th style="padding: 8px; text-align: left; border-bottom: 2px solid #ddd; width: 25%;">Status</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd; width: 20%;">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -74,8 +81,11 @@
                     <td style="padding: 12px; border: 1px solid #ccc;">
                         <img src="${brand.image}" alt="Image"  width="100" class="img-thumbnail""/>
                     </td>
-                    <td style="padding: 12px; border: 1px solid #ccc;">${brand.name}</td>
-                    <td style="padding: 12px; border: 1px solid #ccc;">
+                    <td style="padding: 8px; border: 1px solid #ccc;">${brand.name}</td>
+                    <td style="padding: 8px; border: 1px solid #ccc;">
+                        ${brand.status ? 'Active' : 'Inactive'}
+                    </td>
+                    <td style="padding: 12px; border: 1px solid #ccc;display: flex;">
                         <button class="btn-action" data-option="brand" data-action="edit" data-id="${brand.id}"
                                 style="
                                 padding: 8px 12px;
