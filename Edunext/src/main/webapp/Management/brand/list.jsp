@@ -25,6 +25,17 @@
             ">
             Brand List
         </h2>
+        <form method="get" action="${pageContext.request.contextPath}/Management/brand">
+            <div class="mb-3">
+                <label for="status" class="form-label">Filter by Status</label>
+                <select name="status" class="form-control" id="status" onchange="this.form.submit()">
+                    <option value="">--All--</option>
+                    <option value="true" <%= request.getParameter("status") != null && request.getParameter("status").equals("true") ? "selected" : ""%>>Active</option>
+                    <option value="false" <%= request.getParameter("status") != null && request.getParameter("status").equals("false") ? "selected" : ""%>>Inactive</option>
+                </select>
+            </div>
+            <input type="hidden" name="action" value="sort"/>
+        </form>
         <button class="btn-action" data-option="brand" data-action="add"
                 style="
                 padding: 10px 15px;
@@ -82,20 +93,24 @@
                             Edit
                         </button>
 
-                        <button class="btn-action" data-option="brand" data-action="delete" data-id="${brand.id}"
-                                style="
-                                padding: 8px 12px;
-                                background-color: #f44336;
-                                color: white;
-                                border: none;
-                                cursor: pointer;
-                                border-radius: 5px;
-                                transition: 0.3s;
-                                "
-                                onmouseover="this.style.backgroundColor = '#d32f2f'"
-                                onmouseout="this.style.backgroundColor = '#f44336'">
-                            Delete
-                        </button>
+                        <form method="post" action="${pageContext.request.contextPath}/Management/brand">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="id" value="${brand.id}">
+                            <button type="submit" class="btn-action"
+                                    style="
+                                    padding: 8px 12px;
+                                    background-color: #f44336;
+                                    color: white;
+                                    border: none;
+                                    cursor: pointer;
+                                    border-radius: 5px;
+                                    transition: 0.3s;
+                                    "
+                                    onmouseover="this.style.backgroundColor = '#d32f2f'"
+                                    onmouseout="this.style.backgroundColor = '#f44336'">
+                                Delete
+                            </button>
+                        </form>
                     </td>
                 </tr>
             </c:forEach>
