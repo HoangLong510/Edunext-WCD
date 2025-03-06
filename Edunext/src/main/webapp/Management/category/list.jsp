@@ -38,6 +38,21 @@
                 onmouseout="this.style.backgroundColor = '#008CBA'">
             Create New Category
         </button>
+        <div class="container mt-3">
+            <div class="card shadow-sm" style="width: 20%; min-width: 250px;">
+                <div class="card-body">
+                    <h5 class="card-title">Filter by Status</h5>
+                    <form method="get" action="${pageContext.request.contextPath}/Management/category">
+                        <select name="status" class="form-control" id="status" onchange="this.form.submit()">
+                            <option value="">--All--</option>
+                            <option value="true" ${status == 'true' ? 'selected' : ''}>Active</option>
+                            <option value="false" ${status == 'false' ? 'selected' : ''}>Inactive</option>
+                        </select>
+                        <input type="hidden" name="action" value="sort"/>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <table border="1" 
@@ -52,6 +67,7 @@
                 <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">STT</th>
                 <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Image</th>
                 <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Name</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Status</th>
                 <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Actions</th>
             </tr>
         </thead>
@@ -64,6 +80,9 @@
                         <img src="${category.image}" alt="Image" width="100" class="img-thumbnail"">
                     </td>
                     <td style="padding: 12px; border: 1px solid #ccc;">${category.name}</td>
+                    <td style="padding: 8px; border: 1px solid #ccc;">
+                        ${category.status ? 'Active' : 'Inactive'}
+                    </td>
                     <td style="padding: 12px; border: 1px solid #ccc;">
                         <button class="btn-action" data-option="category" data-action="edit" data-id="${category.id}"
                                 style="
