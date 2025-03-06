@@ -4,17 +4,22 @@
             <h3><%= request.getAttribute("id") == null ? "Add" : "Edit"%> Brand</h3>
         </div>
         <div class="card-body">
-            <form method="post" action="Management/brand?action=add" enctype="multipart/form-data">
+            <form method="post" action="<%= request.getContextPath()%>/Management/brand?action=<%= request.getAttribute("id") == null ? "add" : "edit"%>"
+                  enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<%= request.getAttribute("id") != null ? request.getAttribute("id") : ""%>">
 
                 <div class="mb-3">
                     <label class="form-label">Brand Name</label>
-                    <input type="text" class="form-control" name="name" placeholder="Enter brand name" required>
+                    <input type="text" class="form-control" name="name" placeholder="Enter brand name"
+                           value="<%= request.getAttribute("name") != null ? request.getAttribute("name") : ""%>" required>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Brand Image</label>
-                    <input type="file" class="form-control" name="image" accept="image/*" required>
+                    <input type="file" class="form-control" name="image" accept="image/*">
+                    <% if (request.getAttribute("image") != null) {%>
+                    <p>Current Image: <img src="<%= request.getAttribute("image")%>" alt="Brand Image" width="100"></p>
+                        <% }%>
                 </div>
 
                 <div class="text-center mt-4">

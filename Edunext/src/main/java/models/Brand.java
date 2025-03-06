@@ -18,6 +18,9 @@ public class Brand {
     private int id;
     private String name;
     private String image;
+    @OneToMany(mappedBy = "brand",
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    private List<Category> categories;
     
     public Brand() {
     }
