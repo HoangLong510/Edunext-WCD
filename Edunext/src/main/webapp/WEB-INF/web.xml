@@ -24,6 +24,18 @@
         <servlet-name>AuthServlet</servlet-name>
         <servlet-class>servlets.AuthServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SepayWebhookServlet</servlet-name>
+        <servlet-class>servlets.SepayWebhookServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>servlets.OrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckPaymentStatusServlet</servlet-name>
+        <servlet-class>servlets.CheckPaymentStatusServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CategoryServlet</servlet-name>
         <url-pattern>/Management/category</url-pattern>
@@ -48,7 +60,18 @@
         <servlet-name>AuthServlet</servlet-name>
         <url-pattern>/auth</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>SepayWebhookServlet</servlet-name>
+        <url-pattern>/sepay_webhook</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckPaymentStatusServlet</servlet-name>
+        <url-pattern>/checkpaymentstatus</url-pattern>
+    </servlet-mapping>
     <filter>
         <filter-name>ManagementFilter</filter-name>
         <filter-class>filters.ManagementFilter</filter-class>
@@ -62,4 +85,5 @@
             30
         </session-timeout>
     </session-config>
+    
 </web-app>
