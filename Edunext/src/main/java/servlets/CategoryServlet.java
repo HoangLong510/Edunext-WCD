@@ -50,6 +50,8 @@ public class CategoryServlet extends HttpServlet {
             case "delete":
                 deleteCate(req, resp);
                 break;
+            case "sort":
+                sortCategories(req,resp);
             default:
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action parameter");
                 break;
@@ -219,6 +221,23 @@ public class CategoryServlet extends HttpServlet {
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error processing category edit.");
         }
+    }
+    
+    private void sortCategories(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String statusParam = req.getParameter("status");
+        boolean status = true; // Mặc định là true (Active)
+        if (statusParam != null && statusParam.equals("false")) {
+            status = false; // Nếu statusParam là "false" thì lọc theo inactive
+        }
+
+        // Gọi phương thức trong BrandDao để lấy danh sách sắp xếp
+        List<Category> cates = cateDao.getCategoriesByStatus(status);
+        // Đưa danh sách cate vào request attribute để hiển thị
+        req.setAttribute("cates", cates);
+        req.setAttribute("status", statusParam);
+
+        // Chuyển hướng đến JSP để hiển thị danh sách brand đã được sắp xếp
+        req.getRequestDispatcher("/Management/category/list.jsp").forward(req, resp);
     }
 
 }

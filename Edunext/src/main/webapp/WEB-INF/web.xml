@@ -20,6 +20,10 @@
         <servlet-name>AccountServlet</servlet-name>
         <servlet-class>servlets.AccountServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>servlets.AuthServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CategoryServlet</servlet-name>
         <url-pattern>/Management/category</url-pattern>
@@ -40,6 +44,19 @@
         <servlet-name>AccountServlet</servlet-name>
         <url-pattern>/Management/account</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+    
+    <filter>
+        <filter-name>ManagementFilter</filter-name>
+        <filter-class>filters.ManagementFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ManagementFilter</filter-name>
+        <url-pattern>/Management/*</url-pattern>
+    </filter-mapping>
     <session-config>
         <session-timeout>
             30

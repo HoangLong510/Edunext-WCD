@@ -43,10 +43,13 @@
                     <label for="brand" class="form-label">Brand:</label>
                     <select class="form-control" id="brand" name="brand_id" required>
                         <c:forEach var="b" items="${brands}">
-                            <p>Brand ID: ${b.id}, Selected ID: ${categoryBrandId}</p>
-                            <option value="${b.id}" ${b.id == categoryBrandId ? 'selected="selected"' : ''}>
-                                ${b.name}
-                            </option>
+                            
+                            <c:if test="${b.status == true }">
+                                <option value="${b.id}" 
+                                        <c:if test="${b.id == requestScope.categoryBrandId}">selected</c:if>>
+                                    ${b.name}
+                                </option>
+                            </c:if>
                         </c:forEach>
                     </select>
                 </div>
@@ -71,7 +74,7 @@
             const reader = new FileReader();
             reader.onload = function (e) {
                 preview.src = e.target.result;
-                preview.style.display = "block";  // Hi?n th? ?nh khi ng??i dùng ch?n t?p m?i
+                preview.style.display = "block";  // Hi?n th? ?nh khi ng??i dï¿½ng ch?n t?p m?i
             };
             reader.readAsDataURL(fileInput.files[0]);
         }

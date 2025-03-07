@@ -231,6 +231,7 @@ public class BrandServlet extends HttpServlet {
         List<Brand> brands = brandDao.getBrandsByStatus(status);
         // Đưa danh sách brand vào request attribute để hiển thị
         req.setAttribute("brands", brands);
+        req.setAttribute("status", statusParam);
 
         // Chuyển hướng đến JSP để hiển thị danh sách brand đã được sắp xếp
         req.getRequestDispatcher("/Management/brand/list.jsp").forward(req, resp);

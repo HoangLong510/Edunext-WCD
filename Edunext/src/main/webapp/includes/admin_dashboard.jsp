@@ -297,6 +297,7 @@
                     loadPanel(option, action, id);
                 }
             });
+
             document.addEventListener("submit", function (event) {
                 if (event.target.classList.contains("form-action")) {
                     event.preventDefault();
@@ -337,6 +338,12 @@
                     url += `&id=` + id;
                 }
                 console.log(url);
+
+            // Call Servlet with action( default = list) 
+            function loadPanel(option, action = "list", id) {
+                let url = `/Edunext/Management/` + option + `?action=` + action;
+                if (id)
+                    url += "&id=" + id;
                 fetch(url)
                         .then(response => response.text())
                         .then(html => {
