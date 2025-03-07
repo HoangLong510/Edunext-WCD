@@ -254,7 +254,7 @@
                  ">
                 <div id="panel-content" style="
                      width: 95%;
-                     min-height: 800px;
+                     min-height: 600px;
                      background: white;
                      padding: 20px;
                      border-radius: 8px;
@@ -278,6 +278,7 @@
         </script>
 
         <script>
+
             // Sidebar
             document.querySelectorAll(".menu-item").forEach(button => {
                 button.addEventListener("click", function () {
@@ -296,18 +297,57 @@
                     loadPanel(option, action, id);
                 }
             });
-            // Call Servlet with action( default = list) 
-            function loadPanel(option, action = "list", id = "") {
+            document.addEventListener("submit", function (event) {
+                if (event.target.classList.contains("form-action")) {
+                    event.preventDefault();
+
+                    let form = event.target;
+                    let option = form.getAttribute("data-option");
+                    let action = form.getAttribute("data-action");
+                    let formData = new FormData(form);
+                    // Lấy ID nếu có
+                    let id = form.querySelector("[name='id']")?.value.trim();
+                    let url = `/Edunext/Management/` + option + `?action=` + action;
+
+                    if (id) {
+                        url += `&id=` + id;
+                    }
+
+                    fetch(url, {
+                        method: "POST",
+                        body: formData
+                    })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === "success") {
+                                    loadPanel(option, "list");
+                                } else {
+                                    alert("Lỗi: Không thể thêm dữ liệu!");
+                                }
+                            })
+                            .catch(error => console.error("Lỗi:", error));
+                }
+            });
+
+            // Call Servlet with action 
+            function loadPanel(option, action = "list", id) {
+
                 let url = `/Edunext/Management/` + option + `?action=` + action;
-                if (id)
-                    url += `&id=${id}`;
+                if (id) {
+                    url += `&id=` + id;
+                }
+                console.log(url);
                 fetch(url)
                         .then(response => response.text())
                         .then(html => {
                             document.getElementById("panel-content").innerHTML = html;
+                            
                         })
                         .catch(error => console.error("Error:", error));
             }
+            
+            
+
 
         </script>
     </body>

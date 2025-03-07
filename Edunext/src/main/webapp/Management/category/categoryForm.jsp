@@ -1,13 +1,14 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <div class="container mt-5">
     <div class="card shadow-lg">
         <div class="card-header bg-primary text-white text-center">
             <h3><%= request.getAttribute("id") == null ? "Add" : "Edit"%> Category</h3>
         </div>
         <div class="card-body">
-            <form method="post" 
-                  action="<%= request.getContextPath()%>/Management/category?action=<%= request.getAttribute("id") == null ? "add" : "edit"%>" 
+            <form method="post"
+                  class="form-action"
+                  data-option="category"
+                  data-action="<%= request.getAttribute("id") == null ? "add" : "edit"%>"
                   enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<%= request.getAttribute("id") != null ? request.getAttribute("id") : ""%>">
 
@@ -42,18 +43,19 @@
                     <label for="brand" class="form-label">Brand:</label>
                     <select class="form-control" id="brand" name="brand_id" required>
                         <c:forEach var="b" items="${brands}">
-                            <option value="${b.id}" 
-                                    <c:if test="${b.id == requestScope.categoryBrandId}">selected</c:if>>
+                            <p>Brand ID: ${b.id}, Selected ID: ${categoryBrandId}</p>
+                            <option value="${b.id}" ${b.id == categoryBrandId ? 'selected="selected"' : ''}>
                                 ${b.name}
                             </option>
                         </c:forEach>
                     </select>
                 </div>
 
+
                 <!-- Buttons -->
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success px-4">Submit</button>
-                    <button type="reset" class="btn btn-secondary px-4 ms-2">Reset</button>
+                    <button data-option="category" data-action="list" class="btn btn-secondary btn-action px-4 ms-2">Cancel</button>
                 </div>
             </form>
         </div>
@@ -69,7 +71,7 @@
             const reader = new FileReader();
             reader.onload = function (e) {
                 preview.src = e.target.result;
-                preview.style.display = "block";  // Hiển thị ảnh khi người dùng chọn tệp mới
+                preview.style.display = "block";  // Hi?n th? ?nh khi ng??i d�ng ch?n t?p m?i
             };
             reader.readAsDataURL(fileInput.files[0]);
         }

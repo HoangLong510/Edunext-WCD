@@ -4,7 +4,10 @@
             <h3><%= request.getAttribute("id") == null ? "Add" : "Edit"%> Brand</h3>
         </div>
         <div class="card-body">
-            <form method="post" action="<%= request.getContextPath()%>/Management/brand?action=<%= request.getAttribute("id") == null ? "add" : "edit"%>"
+            <form method="post"
+                  class="form-action"
+                  data-option="brand"
+                  data-action="<%= request.getAttribute("id") == null ? "add" : "edit"%>"
                   enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<%= request.getAttribute("id") != null ? request.getAttribute("id") : ""%>">
 
@@ -27,9 +30,24 @@
 
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success px-4">Submit</button>
-                    <button type="reset" class="btn btn-secondary px-4 ms-2">Reset</button>
+                    <button data-option="brand" data-action="list" class="btn btn-secondary btn-action px-4 ms-2">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<script>
+    function previewImage() {
+        const fileInput = document.getElementById("imageInput");
+        const preview = document.getElementById("imagePreview");
+
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = "block";  
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+</script>

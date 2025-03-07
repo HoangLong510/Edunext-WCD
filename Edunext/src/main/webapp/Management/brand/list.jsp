@@ -64,17 +64,36 @@
                 <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">STT</th>
                 <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Image</th>
                 <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Name</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Status</th>
                 <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="brandList">
             <c:forEach var="brand" items="${brands}">
                 <tr style="border-bottom: 1px solid #ddd;">
                     <td style="padding: 12px; border: 1px solid #ccc;">${brand.id}</td>
                     <td style="padding: 12px; border: 1px solid #ccc;">
-                        <img src="${brand.image}" alt="Image"  width="100" class="img-thumbnail""/>
+                        <img src="${brand.image}" alt="Image"  width="100" class="img-thumbnail"/>
                     </td>
                     <td style="padding: 12px; border: 1px solid #ccc;">${brand.name}</td>
+                    <td style="padding: 12px; border: 1px solid #ccc; text-align: center;">
+                        <span style="
+                              display: inline-flex;
+                              align-items: center;
+                              gap: 6px;
+                              font-weight: bold;
+                              color: ${brand.status ? 'green' : 'red'};
+                              ">
+                            <span style="
+                                  display: inline-block;
+                                  width: 12px;
+                                  height: 12px;
+                                  border-radius: 50%;
+                                  background-color: ${brand.status ? 'green' : 'red'};
+                                  "></span>
+                            ${brand.status ? 'Active' : 'Inactive'}
+                        </span>
+                    </td>
                     <td style="padding: 12px; border: 1px solid #ccc;">
                         <button class="btn-action" data-option="brand" data-action="edit" data-id="${brand.id}"
                                 style="
@@ -88,29 +107,28 @@
                                 transition: 0.3s;
                                 "
                                 onmouseover="this.style.backgroundColor = '#388e3c'"
-                                onmouseout="this.style.backgroundColor = '#4CAF50'"
-                                onclick="window.location.href = 'Management/brand?action=edit&id=${brand.id}'">
+                                onmouseout="this.style.backgroundColor = '#4CAF50'">
                             Edit
                         </button>
 
-                        <form method="post" action="${pageContext.request.contextPath}/Management/brand">
-                            <input type="hidden" name="action" value="delete">
-                            <input type="hidden" name="id" value="${brand.id}">
-                            <button type="submit" class="btn-action"
-                                    style="
-                                    padding: 8px 12px;
-                                    background-color: #f44336;
-                                    color: white;
-                                    border: none;
-                                    cursor: pointer;
-                                    border-radius: 5px;
-                                    transition: 0.3s;
-                                    "
-                                    onmouseover="this.style.backgroundColor = '#d32f2f'"
-                                    onmouseout="this.style.backgroundColor = '#f44336'">
-                                Delete
-                            </button>
-                        </form>
+                        <button class="btn-action" data-option="brand"
+                                data-action="delete"
+                                data-id="${brand.id}"
+                                style="
+                                padding: 8px 12px;
+                                background-color: ${brand.status ? '#f44336' : '#008CBA'};
+                                color: white;
+                                border: none;
+                                cursor: pointer;
+                                border-radius: 5px;
+                                margin-right: 20px;
+                                transition: 0.3s;
+                                "
+                                onmouseover="this.style.backgroundColor = '${brand.status ? '#d32f2f' : '#005f73'}'"
+                                onmouseout="this.style.backgroundColor = '${brand.status ? '#f44336' : '#008CBA'}'">
+                            ${brand.status ? 'Deactivate' : 'Activate'}
+                        </button>
+
                     </td>
                 </tr>
             </c:forEach>

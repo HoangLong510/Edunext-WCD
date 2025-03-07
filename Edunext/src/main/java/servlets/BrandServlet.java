@@ -12,6 +12,7 @@ import jakarta.servlet.http.Part;
 import java.io.Console;
 import models.Brand;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -48,9 +49,10 @@ public class BrandServlet extends HttpServlet {
                 showFormEditBrand(req, resp);
                 break;
             case "sort":
-                sortBrands(req, resp); // Action sort mới
+                sortBrands(req, resp);
                 break;
             case "delete":
+                showConfirmDelete(req, resp);
                 break;
         }
     }
@@ -90,8 +92,22 @@ public class BrandServlet extends HttpServlet {
             imageUrl = uploadFile(filePart);
         }
         Brand newBrand = new Brand(name, imageUrl);
-        brandDao.create(newBrand);
-        resp.sendRedirect("brand");
+
+        boolean success = true;
+        try {
+            brandDao.create(newBrand);
+        } catch (Exception e) {
+            success = false;
+        }
+
+        // Trả về JSON
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+
+        PrintWriter out = resp.getWriter();
+        out.print("{\"status\": \"" + (success ? "success" : "error") + "\", \"option\": \"brand\"}");
+        out.flush();
+
     }
 
     private void showListBrand(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -169,26 +185,39 @@ public class BrandServlet extends HttpServlet {
             }
 
             // Cập nhật thương hiệu trong cơ sở dữ liệu
-            brandDao.update(brand);
+            boolean success = true;
+            try {
+                brandDao.update(brand);
+            } catch (Exception e) {
+                success = false;
+            }
+            // Trả về JSON
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
 
-            // Sau khi cập nhật thành công, chuyển hướng về trang danh sách
-            resp.sendRedirect("brand");
-        } else {
-            // Nếu không tìm thấy thương hiệu, gửi lỗi
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Brand not found");
+            PrintWriter out = resp.getWriter();
+            out.print("{\"status\": \"" + (success ? "success" : "error") + "\", \"option\": \"brand\"}");
+            out.flush();
         }
     }
 
     private void deleteBrand(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int brandId = Integer.parseInt(req.getParameter("id"));
+
+        boolean success = true;
         try {
             brandDao.deactivateBrand(brandId);
-
-            resp.sendRedirect(req.getContextPath() + "/Management/brand");
         } catch (Exception e) {
-            e.printStackTrace();
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error updating brand status");
+            success = false;
         }
+        // Trả về JSON
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+
+        PrintWriter out = resp.getWriter();
+        out.print("{\"status\": \"" + (success ? "success" : "error") + "\", \"option\": \"brand\"}");
+        out.flush();
+
     }
 
     private void sortBrands(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -205,6 +234,18 @@ public class BrandServlet extends HttpServlet {
 
         // Chuyển hướng đến JSP để hiển thị danh sách brand đã được sắp xếp
         req.getRequestDispatcher("/Management/brand/list.jsp").forward(req, resp);
+    }
+
+    private void showConfirmDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String idStr = req.getParameter("id");
+        if (idStr != null && !idStr.isEmpty()) {
+            int id = Integer.parseInt(idStr);
+            Brand brand = brandDao.getOne(id); 
+            req.setAttribute("id", brand.getId());
+            req.setAttribute("name", brand.getName());
+            req.setAttribute("status", brand.isStatus());
+            req.getRequestDispatcher("/Management/brand/delete.jsp").forward(req, resp);
+        }
     }
 
 }
