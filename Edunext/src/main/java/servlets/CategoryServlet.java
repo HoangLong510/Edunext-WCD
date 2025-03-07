@@ -12,6 +12,7 @@ import jakarta.servlet.http.Part;
 import models.Brand;
 import models.Category;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -129,31 +130,39 @@ public class CategoryServlet extends HttpServlet {
         return null;
     }
 
-    private void addCate(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void addCate(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String name = req.getParameter("name");
-        String image = req.getParameter("image");
-        int brandIdStr = Integer.parseInt(req.getParameter("brand_id"));
+        int brandId = Integer.parseInt(req.getParameter("brand_id"));
+        String imageUrl = null;
+        boolean success = true;
 
         try {
             Part filePart = req.getPart("image");
-            String uploadedImage = uploadFile(filePart);
-            if (uploadedImage != null) {
-                image = uploadedImage; // Nếu có tệp thì sử dụng đường dẫn tệp đã tải lên
+            if (filePart != null && filePart.getSize() > 0) {
+                imageUrl = uploadFile(filePart);
+            } else {
+                imageUrl = req.getParameter("image"); // Sử dụng giá trị từ request nếu không có file
             }
 
-            Brand brand = brandDao.getOne(brandIdStr); // Giả sử có phương thức getOne trong BrandDao
+            Brand brand = brandDao.getOne(brandId); // Lấy brand theo ID
 
             if (brand != null) {
-                Category newCate = new Category(name, image, brand);
+                Category newCate = new Category(name, imageUrl, brand);
                 cateDao.create(newCate);
-                resp.sendRedirect("category?action=list");
             } else {
-                req.setAttribute("errorMessage", "Invalid brand selected.");
-                req.getRequestDispatcher("Management/category/categoryForm.jsp").forward(req, resp);
+                success = false;
             }
         } catch (Exception e) {
-            resp.sendRedirect("category?action=list");
+            success = false;
         }
+
+        // Trả về JSON
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+
+        PrintWriter out = resp.getWriter();
+        out.print("{\"status\": \"" + (success ? "success" : "error") + "\", \"option\": \"category\"}");
+        out.flush();
     }
 
     private void showFormEditCate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -169,8 +178,7 @@ public class CategoryServlet extends HttpServlet {
             req.setAttribute("image", cate.getImage());
             req.setAttribute("brands", brands);
             req.setAttribute("categoryBrandId", cate.getBrand().getId());
-
-            // Chuyển tiếp request sang trang form
+            
             req.getRequestDispatcher("/Management/category/categoryForm.jsp").forward(req, resp);
         }
     }

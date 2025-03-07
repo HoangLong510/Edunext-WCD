@@ -93,11 +93,10 @@
                                 cursor: pointer;
                                 border-radius: 5px;
                                 margin-right: 20px;
-                                transition: background-color 0.3s ease;
+                                transition: 0.3s;
                                 "
                                 onmouseover="this.style.backgroundColor = '#388e3c'"
-                                onmouseout="this.style.backgroundColor = '#4CAF50'"
-                                onclick="window.location.href = 'Management/category?action=edit&id=${category.id}'">
+                                onmouseout="this.style.backgroundColor = '#4CAF50'">
                             Edit
                         </button>
                         <button class="btn-action" data-option="category" data-action="delete" data-id="${category.id}"
