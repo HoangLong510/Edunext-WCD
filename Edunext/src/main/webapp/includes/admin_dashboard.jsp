@@ -297,10 +297,10 @@
                 }
             });
             // Call Servlet with action( default = list) 
-            function loadPanel(option, action = "list", id = "") {
+            function loadPanel(option, action = "list", id) {
                 let url = `/Edunext/Management/` + option + `?action=` + action;
                 if (id)
-                    url += `&id=${id}`;
+                    url += "&id=" + id;
                 fetch(url)
                         .then(response => response.text())
                         .then(html => {

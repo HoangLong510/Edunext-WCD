@@ -9,7 +9,6 @@
                 <input type="hidden" name="id" value="${not empty formData.id ? formData.id : ''}">
                 <input type="hidden" name="email" value="${not empty formData.email ? formData.email : ''}">
                 <input type="hidden" name="password" value="${not empty formData.password ? formData.password : ''}">
-                <input type="hidden" name="role" value="${not empty formData.role ? formData.role : ''}">
 
                 <div class="row g-3">
                     <div class="col-md-12">
@@ -35,6 +34,14 @@
                     <label class="form-label">Address</label>
                     <textarea class="form-control" name="address" rows="2" placeholder="Enter address">${not empty formData.address ? formData.address : ''}</textarea>
                     <span class="text-danger">${not empty errors.address ? errors.address : ''}</span>
+                </div>
+                
+                <div class="mb-3 mt-3">
+                    <label for="categoryId" class="form-label">Role</label>
+                    <select class="form-select" name="role" id="role">
+                        <option value="user" ${not empty formData.role ? (formData.role == 'user' ? 'selected' : '') : ''}>User</option>
+                        <option value="admin" ${not empty formData.role ? (formData.role == 'admin' ? 'selected' : '') : ''}>Admin</option>
+                    </select>
                 </div>
 
                 <div class="text-center mt-4">

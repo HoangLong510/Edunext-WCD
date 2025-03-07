@@ -25,7 +25,7 @@
             ">
             Account Management
         </h2>
-        <button class="btn-action" data-option="account" data-action="add"
+<!--        <button class="btn-action" data-option="account" data-action="add"
                 style="
                 padding: 10px 15px;
                 background-color: #008CBA;
@@ -38,7 +38,7 @@
                 onmouseover="this.style.backgroundColor = '#005f73'"
                 onmouseout="this.style.backgroundColor = '#008CBA'">
             Create New Account
-        </button>
+        </button>-->
     </div>
 
     <table border="1" 
